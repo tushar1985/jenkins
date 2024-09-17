@@ -19,6 +19,27 @@ pipeline {
             }
         }
 
+
+                stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build(DOCKER_IMAGE)
+                }
+            }
+        }
+
+        
+        
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: DOCKER_CREDENTIALS, url: 'https://index.docker.io/v1/') {
+                        docker.image(DOCKER_IMAGE).push()
+                    }
+                }
+            }
+        }
+
         stage('Clean Up Old Installations') {
             steps {
                 script {
@@ -91,16 +112,7 @@ pipeline {
             }
         }
 
-        
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    withDockerRegistry(credentialsId: DOCKER_CREDENTIALS, url: 'https://index.docker.io/v1/') {
-                        docker.image(DOCKER_IMAGE).push()
-                    }
-                }
-            }
-        }
+
 
         stage('Configure AWS CLI and kubectl') {
             steps {
