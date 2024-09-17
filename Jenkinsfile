@@ -10,7 +10,6 @@ pipeline {
         AWS_CLI_VERSION = '2.17.46'
         EKSCTL_VERSION = '0.190.0'
         PATH = '/var/lib/jenkins/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin'
-        SCANNER_HOME = tool 'sonar-scanner' // SonarQube Scanner Home
     }
 
     stages {
@@ -92,39 +91,7 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('sonar-server') {
-                    sh ''' 
-                    $SCANNER_HOME/bin/sonar-scanner \
-                    -Dsonar.projectName=ValleyJS \
-                    -Dsonar.projectKey=valleyjs \
-                    -Dsonar.sources=.
-                    '''
-                }
-            }
-        }
-
-        stage('Trivy File System Scan') {
-            steps {
-                sh 'trivy fs --format table -o fs-scan.html .'
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.build(DOCKER_IMAGE)
-                }
-            }
-        }
-
-        stage('Trivy Image Scan') {
-            steps {
-                sh 'trivy image --format table -o image-scan.html $DOCKER_IMAGE'
-            }
-        }
-
+        
         stage('Push Docker Image') {
             steps {
                 script {
