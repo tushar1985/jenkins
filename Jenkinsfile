@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         AWS_REGION = 'us-east-1'
-        EKS_CLUSTER_NAME = 'my-eks'
-        DOCKER_IMAGE = 'kamran111/valleyjs:latest'
+        EKS_CLUSTER_NAME = 'my-k8cluster'
+        DOCKER_IMAGE = 'btushar/valleyjs:latest'
         DOCKER_CREDENTIALS = 'docker-cred' // Docker Hub credentials in Jenkins
         AWS_CREDENTIALS = 'aws-credentials'
         AWS_CLI_VERSION = '2.17.46'
@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/kamranali111/valley_js.git', branch: 'main'
+                git url: 'https://github.com/tushar1985/jenkins.git', branch: 'main'
             }
         }
 
