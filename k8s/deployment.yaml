@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: valley-js
-          image: kamran111/valleyjs:latest
+          image: btushar/valleyjs:latest
           ports:
             - containerPort: 3000
 
